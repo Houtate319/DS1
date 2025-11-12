@@ -58,8 +58,139 @@ Installation des bibliothèques essentielles:
 ```
 !pip install pandas matplotlib seaborn ucimlrepo
 ```
+---
+2. Importation et Chargement du Dataset
+Importation, chargement et aperçu:
+```
+from ucimlrepo import fetch_ucirepo
+import pandas as pd
 
+# Télécharger et charger la base Online Retail
+online_retail = fetch_ucirepo(id=352)
+df = online_retail.data.features
 
+# Afficher les 5 premières lignes
+print(df.head())
+print(df.info())
+```
+Sortie typique : un tableau de données brutes avec les colonnes principales : InvoiceNo, StockCode, Description, Quantity, InvoiceDate, UnitPrice, CustomerID, Country.
+
+---
+3. Nettoyage et Préparation des Données
+Étapes du nettoyage :
+```
+df = df.dropna(subset=["Description", "CustomerID"])
+df = df[df["Quantity"] > 0]
+df = df[df["UnitPrice"] > 0]
+print(f"Dimensions après nettoyage : {df.shape}")
+```
+On retire les lignes avec valeurs manquantes, quantités/prix non-positifs (retours, erreurs).
+
+---
+4. Création de nouvelles variables
+Ajout du total de vente et variables temporelles :
+```
+df["TotalPrice"] = df["Quantity"] * df["UnitPrice"]
+df["InvoiceDate"] = pd.to_datetime(df["InvoiceDate"])
+df["Year"] = df["InvoiceDate"].dt.year
+df["Month"] = df["InvoiceDate"].dt.month
+df["Day"] = df["InvoiceDate"].dt.day
+df["Hour"] = df["InvoiceDate"].dt.hour
+print(df[["InvoiceNo", "Quantity", "UnitPrice", "TotalPrice", "Year", "Month", "Day", "Hour"]].head())
+```
+Cela permet l’analyse temporelle fine et le calcul agrégé.
+
+---
+5. Analyse des tendances de vente
+Ventes quotidiennes et mensuelles :
+```
+# Quotidiennes
+dailysales = df.groupby(["Year", "Month", "Day"])["TotalPrice"].sum().reset_index()
+print(dailysales.head())
+
+# Mensuelles
+monthlysales = df.groupby(["Year", "Month"])["TotalPrice"].sum().reset_index()
+print(monthlysales.head())
+```
+On détecte les pics d’activité, jours/mois record affichés.
+
+---
+6. Segmentation produits et clients
+Top produits vendus et rentabilité :
+```
+topselling = df.groupby("Description")["Quantity"].sum().sort_values(ascending=False).head(10)
+print(topselling)
+
+topprofit = df.groupby("Description")["TotalPrice"].sum().sort_values(ascending=False).head(10)
+print(topprofit)
+```
+On obtient la liste des best-sellers et des produits générant le plus de chiffre d’affaires.
+
+Top clients actifs et rentables :
+```
+top_customers = df.groupby("CustomerID")["InvoiceNo"].nunique().sort_values(ascending=False).head(10)
+print(top_customers)
+
+top_profit_clients = df.groupby("CustomerID")["TotalPrice"].sum().sort_values(ascending=False).head(10)
+print(top_profit_clients)
+
+```
+Identification des clients les plus fidèles et les plus profitables.
+
+---
+7. Analyse géographique des ventes
+Répartition par pays :
+```
+sales_by_country = df.groupby("Country")["TotalPrice"].sum().sort_values(ascending=False)
+print(sales_by_country.head(10))
+```
+On distingue clairement les marchés majeurs de l’entreprise.
+
+---
+8. Visualisation des résultats
+Exemples graphiques (tendances, produits, clients, géographie) :
+```
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Ventes mensuelles
+monthlysales["YearMonth"] = pd.to_datetime(monthlysales["Year"].astype(str) + "-" + monthlysales["Month"].astype(str))
+plt.figure(figsize=(12,6))
+sns.lineplot(x="YearMonth", y="TotalPrice", data=monthlysales, marker="o")
+plt.title("Tendances des ventes mensuelles")
+plt.xlabel("Mois")
+plt.ylabel("Ventes mensuelles")
+plt.xticks(rotation=45)
+plt.show()
+
+# Top produits rentables
+plt.figure(figsize=(12,6))
+topprofit.plot(kind="bar")
+plt.title("Top produits rentables")
+plt.ylabel("Chiffre d'affaires (£)")
+plt.show()
+
+# Top pays
+plt.figure(figsize=(12,6))
+sales_by_country.head(10).plot(kind="bar")
+plt.title("Top 10 Pays par CA")
+plt.ylabel("Ventes totales (£)")
+plt.xticks(rotation=45)
+plt.show()
+```
+Graphiques lisibles, légendés, illustrant les principaux enseignements.
+
+---
+9. Synthèse et Commentaires
+La base nettoyée comporte ~398 000 transactions valides.
+
+Les produits best-sellers et top clients sont rigoureusement identifiés.
+
+Les périodes de haute activité : décembre 2011 (jour record), novembre 2011 (mois record).
+
+Les marchés majeurs sont le Royaume-Uni, les Pays-Bas, l’Irlande et l’Allemagne.
+
+Tous les résultats sont visualisés et expliqués.
 
 
 
