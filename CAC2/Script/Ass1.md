@@ -48,3 +48,20 @@ Le but de cette base de données est d’offrir un référentiel fiable aux univ
 - Développer des modèles de segmentation client ou de détection de fraudes
 - Expérimenter sur de vraies transactions tirées d’un contexte commercial international auprès de détaillants comme de grossistes.
 - Appliquer et tester divers
+  
+---
+
+# Etapes d'analyse :
+
+1. Environnement Python et Installation
+Installation des bibliothèques essentielles:
+```
+!pip install pandas matplotlib seaborn ucimlrepo
+```
+
+
+
+
+
+
+
