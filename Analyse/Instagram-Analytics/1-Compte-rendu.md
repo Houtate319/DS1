@@ -225,6 +225,8 @@ print(f"Régression Linéaire - RMSE : {rmse_lr:.2f}")
 - **MSE ≈ 2238.45**
 - **RMSE ≈ 47.31**
 
+![Régression linéaire](Regression linéaire.png)
+
 La régression linéaire explique seulement ~9% de la variance, indiquant que la relation entre les features et le taux d'engagement n'est pas linéaire ou que certaines variables clés manquent.
 
 ### 4.2 Régression Polynomiale
