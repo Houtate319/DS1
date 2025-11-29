@@ -42,7 +42,7 @@
     * [Régression par Arbre de Décision](#43-régression-par-arbre-de-décision)
     * [Régression par Forêt Aléatoire](#44-régression-par-forêt-aléatoire)
     * [Régression SVR (Support Vector Regression)](#45-régression-svr-support-vector-regression)
-    * [Tableau Comparatif des Performances](#46-tableau-comparatif-des-performances)
+    * [Graphique et Tableau Comparatif des Performances](#46-graphique-et-tableau-comparatif-des-performances)
 5. [Analyse des Résultats et Recommandations](#5-analyse-des-résultats-et-recommandations)
 6. [Conclusion](#6-conclusion)
 
@@ -225,7 +225,8 @@ print(f"Régression Linéaire - RMSE : {rmse_lr:.2f}")
 - **MSE ≈ 2238.45**
 - **RMSE ≈ 47.31**
 
-![Régression linéaire](Regression linéaire.png)
+![Logo](Graphiques/Régression_linéaire.png)
+
 
 La régression linéaire explique seulement ~9% de la variance, indiquant que la relation entre les features et le taux d'engagement n'est pas linéaire ou que certaines variables clés manquent.
 
@@ -256,6 +257,8 @@ print(f"Régression Polynomiale - RMSE : {rmse_poly:.2f}")
 - **MSE ≈ 2062.18**
 - **RMSE ≈ 45.41**
 
+![Logo](Graphiques/Régression_polynomiale.png)
+
 La régression polynomiale améliore les performances de la régression linéaire (+8% sur $R^2$), montrant que des interactions entre variables sont pertinentes. Cependant, le modèle reste insuffisant.
 
 ### 4.3 Régression par Arbre de Décision
@@ -285,6 +288,8 @@ print(f"Arbre de Décision - RMSE : {rmse_dt:.2f}")
 - Le $R^2$ augmente de 9% (régression linéaire) à **71%**.
 - La RMSE diminue d'environ **47** à **27**, une réduction d'environ 43%.
 
+![Logo](Graphiques/Régression_par_Arbres_de_Décision.png)
+
 Cela indique que la relation entre les features et le taux d'engagement est hautement non-linéaire et que les arbres de décision capturent bien ces interactions.
 
 ### 4.4 Régression par Forêt Aléatoire
@@ -309,6 +314,8 @@ print(f"Forêt Aléatoire - RMSE : {rmse_rf:.2f}")
 - **$R^2$ ≈ 0.5900** (59%)
 - **MSE ≈ 1015.68**
 - **RMSE ≈ 31.87**
+
+![Logo](Graphiques/Régression_par_Forêts_Aléatoires.png)
 
 La Forêt Aléatoire obtient des performances meilleures que la Régression Polynomiale mais **inférieures** à l'Arbre de Décision. Cela peut sembler contre-intuitif (un ensemble d'arbres surpassant un arbre seul), mais plusieurs facteurs l'expliquent :
 - Le jeu de données est suffisamment volumineux pour qu'un arbre unique bien construit performe bien.
@@ -346,9 +353,17 @@ print(f"SVR - RMSE : {rmse_svr:.2f}")
 - **MSE ≈ 2238.45**
 - **RMSE ≈ 47.31**
 
+![Logo](Graphiques/Régression_CVR.png)
+
 Le SVR présente les **mêmes performances que la Régression Linéaire**, ce qui suggère que le noyau RBF n'a pas capturé efficacement les patterns non-linéaires du jeu de données. Un réglage des hyperparamètres (`C`, `gamma`) pourrait améliorer les résultats.
 
-### 4.6 Tableau Comparatif des Performances
+### 4.6 Graphique et Tableau Comparatif des Performances
+
+*1-* **Graphique : Comparaison des Modèles et Visualisation des Résultats**
+
+![Logo](Graphiques/Comparaison_des_Modèles_et_Visualisation_des_Résultats.png)
+
+*2-* **Tableau : Comparaison des Performances**
 
 | Modèle                   | $R^2$    | MSE       | RMSE    | Performance          |
 |--------------------------|----------|-----------|---------|----------------------|
